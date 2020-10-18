@@ -4,22 +4,25 @@ import time
 
 
 class ProducerServer(KafkaProducer):
+    """Produces Kafka messages to a topic from JSON file
+        :param input_file: JSON file for source of events
+        :param topic: Kafka topic name to write events to
+    """
 
     def __init__(self, input_file, topic, **kwargs):
         super().__init__(**kwargs)
         self.input_file = input_file
         self.topic = topic
 
-    #TODO we're generating a dummy data
     def generate_data(self):
+        """Opens JSON file and converts each record into a Kafka message"""
         with open(self.input_file) as f:
-            for line in f:
-                message = self.dict_to_binary(line)
-                # TODO send the correct data
-                self.send()
+            json_data = json.load(f)
+            for record in json_data:
+                message = self.dict_to_binary(record)
+                self.send(topic=self.topic, value=message)
                 time.sleep(1)
 
-    # TODO fill this in to return the json dictionary to binary
     def dict_to_binary(self, json_dict):
-        return 
-        
+        """Converts JSON object to UTF-8 encoded byte array"""
+        return json.dumps(json_dict).encode('utf-8')

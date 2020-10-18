@@ -1,16 +1,19 @@
 import producer_server
 
+KAFKA_TOPIC_NAME = "gov.sfpd.servicecalls"
+BOOTSTRAP_SERVER = "localhost:9092"
+CLIENT_ID = "producer_server"
+
 
 def run_kafka_server():
-	# TODO get the json file path
-    input_file = ""
+    """Writes police department service call events to Kafka topic from JSON file"""
+    input_file = "../data/police-department-calls-for-service.json"
 
-    # TODO fill in blanks
     producer = producer_server.ProducerServer(
         input_file=input_file,
-        topic="",
-        bootstrap_servers="",
-        client_id=""
+        topic=KAFKA_TOPIC_NAME,
+        bootstrap_servers=BOOTSTRAP_SERVER,
+        client_id=CLIENT_ID
     )
 
     return producer

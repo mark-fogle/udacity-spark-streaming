@@ -35,3 +35,21 @@ This is tested using both the kafka-console-consumer CLI utility as well as a cu
 The last part of this project is to ingest data through Spark Structured Streaming. The python file (data_stream.py) contains the PySpark code to consume events from the Kafka topic, aggregate them over a given window and write the to a new stream on the console.
 
 ![Spark Streaming Output](/docs/images/spark_streaming.png)
+
+Progress Reporter
+
+![Progress Reporter](/docs/images/progress_report.png)
+
+Spark UI
+
+![Spark UI](/docs/images/spark_ui.png)
+
+## Questions
+
+* How did changing values on the SparkSession property parameters affect the throughput and latency of the data?
+
+Changing the readStream maxOffsetsPerTrigger allowed for more records to be processed within a batch. This increases the total latency per batch but also the total throughput.
+
+* What were the 2-3 most efficient SparkSession property key/value pairs? Through testing multiple variations on values, how can you tell these were the most optimal?
+
+Adjusting maxOffsetsPerTrigger, and the window duration and slide duration affetcs how many records are processed per batch. More records per batch is more efficient to a degreee sur to the overhead of processing each batch vs. processing records.
